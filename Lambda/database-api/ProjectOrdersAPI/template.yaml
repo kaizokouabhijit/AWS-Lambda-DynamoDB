@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  ordersApiProject
+
+  ordersapi-project
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.7
+    
+
+Resources:
+
+  OrdersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Table-for-orders-lambda-project
+      PrimaryKey: 
+        Name: id
+        Type: Number
+
+  createorderapiFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ordersapi/
+      Handler: create.lambda_handler
+      Architectures:
+        - x86_64
+      Events:
+        createOrder:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /orders
+            Method: post
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+
+  readorderapiFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ordersapi/
+      Handler: read.lambda_handler
+      Architectures:
+        - x86_64
+      Events:
+        createOrder:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /orders/{id}
+            Method: get
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+
+
+  
+

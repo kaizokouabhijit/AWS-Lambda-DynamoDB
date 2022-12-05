@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "CLoudformation-sam-first-lambda"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-6fir1z4csrd9"
+s3_prefix = "CLoudformation-sam-first-lambda"
+region = "us-east-2"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
